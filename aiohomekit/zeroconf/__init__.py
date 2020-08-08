@@ -130,7 +130,7 @@ def discover_homekit_devices(
         max_seconds,
         zeroconf_instance,
         stack_info=True,
-    )    
+    )
     zeroconf = zeroconf_instance or Zeroconf()
     listener = CollectingListener()
     service_browser = ServiceBrowser(zeroconf, HAP_TYPE, listener)
