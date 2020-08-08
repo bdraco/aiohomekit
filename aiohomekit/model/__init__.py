@@ -178,11 +178,12 @@ class Accessory(ToDictMixin):
 
     @classmethod
     def create_from_dict(cls, data: Dict[str, Any]) -> "Accessory":
+        logging.error("ACC Data: %s", data)
+
         accessory = cls()
         accessory.aid = data["aid"]
 
         for service_data in data["services"]:
-            logging.error("Service_Data: %s", service_data)
             service = accessory.add_service(service_data["type"], add_required=False)
             service.iid = service_data["iid"]
 
