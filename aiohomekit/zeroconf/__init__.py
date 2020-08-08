@@ -244,6 +244,13 @@ def _find_data_for_device_id(
     limit of `max_seconds` before it times out. The runtime of the function may be longer because of the Bonjour
     handling code.
     """
+    logging.debug(
+        "_find_data_for_device_id: device_id=%s, max_seconds=%s, zeroconf_instance=%s",
+        device_id,
+        max_seconds,
+        zeroconf_instance,
+        stack_info=True,
+    )
     zeroconf = zeroconf_instance or Zeroconf()
     found_device_event = threading.Event()
     listener = CollectingListener(
