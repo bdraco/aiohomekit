@@ -16,6 +16,7 @@
 
 import json
 from typing import Any, Dict, Iterable, List, Optional
+import logging
 
 from .categories import Categories
 from .characteristics import (
@@ -181,6 +182,7 @@ class Accessory(ToDictMixin):
         accessory.aid = data["aid"]
 
         for service_data in data["services"]:
+            logging.error("Service_Data: %s", service_data)
             service = accessory.add_service(service_data["type"], add_required=False)
             service.iid = service_data["iid"]
 
