@@ -283,6 +283,14 @@ async def async_find_device_ip_and_port(
     device_id: str, max_seconds: int = 10, zeroconf_instance: "Zeroconf" = None
 ) -> Tuple[str, int]:
     loop = asyncio.get_event_loop()
+    logging.error(
+        "async_find_device_ip_and_port: device_id=%s, max_seconds=%s, zeroconf_instance=%s",
+        device_id,
+        max_seconds,
+        zeroconf_instance,
+        stack_info=True,
+    )
+
     data = await loop.run_in_executor(
         None,
         partial(
@@ -299,6 +307,14 @@ async def async_find_data_for_device_id(
     device_id: str, max_seconds: int = 10, zeroconf_instance: "Zeroconf" = None
 ) -> Tuple[str, int]:
     loop = asyncio.get_event_loop()
+    logging.error(
+        "async_find_data_for_device_id: device_id=%s, max_seconds=%s, zeroconf_instance=%s",
+        device_id,
+        max_seconds,
+        zeroconf_instance,
+        stack_info=True,
+    )
+
     return await loop.run_in_executor(
         None,
         partial(
