@@ -125,6 +125,12 @@ def discover_homekit_devices(
     :param max_seconds: the number of seconds we will wait for the devices to be discovered
     :return: a list of dicts containing all fields as described in table 5.7 page 69
     """
+    logging.error(
+        "discover_homekit_devices: max_seconds=%s, zeroconf_instance=%s",
+        max_seconds,
+        zeroconf_instance,
+        stack_info=True,
+    )    
     zeroconf = zeroconf_instance or Zeroconf()
     listener = CollectingListener()
     service_browser = ServiceBrowser(zeroconf, HAP_TYPE, listener)
@@ -244,7 +250,7 @@ def _find_data_for_device_id(
     limit of `max_seconds` before it times out. The runtime of the function may be longer because of the Bonjour
     handling code.
     """
-    logging.debug(
+    logging.error(
         "_find_data_for_device_id: device_id=%s, max_seconds=%s, zeroconf_instance=%s",
         device_id,
         max_seconds,
