@@ -292,29 +292,28 @@ class IpPairing(AbstractPairing):
             )
             return {}
 
-        data = []
+        subscribed = {}
+        # We do one at a time to match what iOS does
+        # even though its really inefficient
+        # https://github.com/home-assistant/core/issues/37996
         for (aid, iid) in characteristics:
-            data.append({"aid": aid, "iid": iid, "ev": True})
+            data = {"characteristics": [{"aid": aid, "iid": iid, "ev": True}]}
+            try:
+                response = await self.connection.put_json("/characteristics", data)
+            except AccessoryDisconnectedError:
+                self.supports_subscribe = False
+                return {}
 
-        data = {"characteristics": data}
+            if not response:
+                continue
 
-        tmp = {}
-
-        try:
-            response = await self.connection.put_json("/characteristics", data)
-        except AccessoryDisconnectedError:
-            self.supports_subscribe = False
-            return {}
-
-        if response:
             for row in response.get("characteristics", []):
-                id_tuple = (row["aid"], row["iid"])
-                tmp[id_tuple] = {
+                subscribed[(row["aid"], row["iid"])] = {
                     "status": row["status"],
                     "description": HapStatusCodes[row["status"]],
                 }
 
-        return tmp
+        return subscribed
 
     async def unsubscribe(self, characteristics):
         if not self.connection.is_connected:
